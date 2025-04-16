@@ -1,0 +1,52 @@
+body {
+	background-color: black;
+}
+
+#logo {
+	width: 100%;
+	margin: 0;
+	position: absolute;
+	top: -100%;
+	left: 0;
+	transition: 1s ease;
+}
+
+.hint_img {
+	width: 500px;
+	height: 500px;
+	margin: 0;
+	position: absolute;
+	left: -100%;
+	transition: 1s ease;
+}
+
+.hint_text {
+	width: calc(100% - 600px);
+	height: 500px;
+	margin: 0;
+	font-size: 24px;
+	font-family: consolas;
+	color: white;
+	position: absolute;
+	left: -100%;
+	display: flex;
+	align-items: center;
+	transition: 1s ease;
+}
+
+#login {
+	width: 500px;
+	height: 100px;
+	box-sizing: border-box;
+	border-radius: 10px;
+	background-color: red;
+	color: white;
+	font-family: consolas;
+	margin: 0;
+	position: absolute;
+	left: -100%;
+	font-size: 32px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+	<meta charset='utf-8'>
+	<title>Team Hunters</title>
+	<link rel='stylesheet' href='{{url_for("static", filename="css/game.css")}}'>
+	<script src='{{url_for("static", filename="js/game.js")}}'></script>
+</head>
+<body id='{{current_user.game_code}}'>
+	<audio id='player' controls autoplay></audio>
+</body>
+</html>

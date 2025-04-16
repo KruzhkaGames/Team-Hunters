@@ -1,0 +1,11 @@
+body {
+	background-color: black;
+}
+
+#header {
+	color: white;
+	font-family: consolas;
+	font-size: 64px;
+	display: flex;
+	justify-content: center;
+}

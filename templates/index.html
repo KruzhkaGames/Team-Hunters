@@ -3,8 +3,17 @@
 <head>
 	<meta charset='utf-8'>
 	<title>Team Hunters</title>
+	<link rel='stylesheet' href='{{url_for("static", filename="css/index.css")}}'>
+	<script src='{{url_for("static", filename="js/index.js")}}'></script>
 </head>
 <body>
-	<h1>Team Hunters</h1>
+	<img id='logo' src='{{url_for("static", filename="img/logo.png")}}' alt='logo'>
+	<p id='hint1' class='hint_text'>Каждый игрок получает роль - Секретный Агент (Secret Agency) или Двойной Агент, работающий и на другую организацию (Team Hunters), которая занимается "охотой" за Секретными Агентами (вылавливает их и получает от них информацию о других Агентах). Задача Секретных Агентов - вычислить Двойных, а у Двойных Агентов - не дать себя вычислить и арестовать.</p>
+	<p id='hint2' class='hint_text'>В каждом раунде игроки получают дела, в которых содержится информация о Двойных Агентах. Это может быть наводкой на них. Двойные Агенты не получат информации, но должны пытаться снять с себя обвинения, чтобы выиграть, а также могут докладывать о ложной, "полученной" ими информации в их деле.</p>
+	<p id='hint3' class='hint_text'>Каждый раунд обойдётся Секретным Агентам средствами из общего выигрыша, поэтому постарайтесь обнаружить Двойных Агентов как можно быстрее (и, главное, верно). В случае их победы Секретные Агенты разделят между собой выигрыш поровну, а Двойные ничего не получат. При хотя бы одном оставшемся Двойном Агенте Секретные проиграют и ничего не получат, а Двойные разделят между собой общий выигрыш поровну, так что работайте сообща!</p>
+	<img id='hint1img' src='{{url_for("static", filename="img/hint1.png")}}' alt='hint1' class='hint_img'>
+	<img id='hint2img' src='{{url_for("static", filename="img/hint2.png")}}' alt='hint2' class='hint_img'>
+	<img id='hint3img' src='{{url_for("static", filename="img/hint3.png")}}' alt='hint3' class='hint_img'>
+	<div id='login' onclick='login()'>Авторизация</div>
 </body>
 </html>

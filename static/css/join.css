@@ -1,0 +1,9 @@
+body {
+	background-color: black;
+}
+
+p {
+	color: white;
+	font-family: consolas;
+	font-size: 32px;
+}
