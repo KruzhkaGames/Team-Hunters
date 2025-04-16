@@ -9,6 +9,7 @@ from wtforms.validators import DataRequired
 from flask_socketio import SocketIO
 import random
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '6as7d6f876xyucxgyfyu63tuy32tuc'
 socketio = SocketIO(app, cors_allowed_origins="*")
