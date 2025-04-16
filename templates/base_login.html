@@ -11,9 +11,9 @@
 	<script src='{{url_for("static", filename="js/base_login.js")}}'></script>
 </head>
 <body>
-	<div id='header' onclick='change()'>{{['Вход', 'Регистрация'][type_of]}}</div>
 	<main role='main' class='container'>
 	    {% block content %}{% endblock %}
 	</main>
+	<div id='header' onclick='change()'>{{['Зарегистрироваться', 'Войти'][type_of]}}</div>
 </body>
 </html>
