@@ -59,5 +59,4 @@ async function startRecording() {
     } catch(e) {console.error('Recording error:', e);}
 }
 
-initSocket();
-startRecording();
+window.onload = function() {initSocket(); startRecording();};

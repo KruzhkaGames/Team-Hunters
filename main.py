@@ -93,8 +93,8 @@ def join():
     db_sess.commit()
     if form.validate_on_submit():
         if int(form.code.data) != 0:
-            if db_sess.query(Game).filter(Game.id == int(form.code.data)).first():
-                user = db_sess.query(User).filter(User.id == current_user.id)
+            if db_sess.query(Game).filter(Game.code == int(form.code.data)).all():
+                user = db_sess.query(User).filter(User.id == current_user.id).first()
                 user.game_code = int(form.code.data)
                 db_sess.commit()
                 return redirect('/lobby')
