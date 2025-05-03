@@ -1,3 +1,121 @@
 body {
 	background-color: black;
 }
+
+#waiting {
+	color: white;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	transition: 1s ease;
+}
+
+#role_img {
+	position: absolute;
+	margin: 0;
+	top: calc(50% - 250px);
+	left: calc(50% - 250px);
+	opacity: 0;
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#role_name {
+	color: white;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: calc(50% + 300px);
+	left: -100%;
+	width: 100%;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	transition: 1s ease;
+}
+
+#role_about {
+	color: white;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: calc(50% + 500px);
+	left: -100%;
+	width: 100%;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	transition: 1s ease;
+}
+
+#role_ok {
+	color: white;
+	background-color: red;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: calc(50% + 750px);
+	left: -100%;
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#info_folder {
+	position: absolute;
+	margin: 0;
+	top: calc(50% - 250px);
+	left: -100%;
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#info_paper {
+	position: absolute;
+	margin: 0;
+	padding: 10px;
+	top: calc(50% - 240px);
+	left: -100%;
+	width: 360px;
+	height: 480px;
+	transition: 1s ease;
+	background-color: white;
+	color: black;
+	font-size: 20px;
+}
+
+#info_ok {
+	color: white;
+	background-color: red;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: calc(50% + 300px);
+	left: -100%;
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#front_agent {
+	position: absolute;
+	margin: 0;
+	top: 100%;
+	left: calc(50% - 250px);
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}

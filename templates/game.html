@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang='ru'>
-<head>
+<head id='{{current_user.id}}'>
 	<meta charset='utf-8'>
 	<title>Team Hunters</title>
 	<link rel='stylesheet' href='{{url_for("static", filename="css/game.css")}}'>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
-	<script src='{{url_for("static", filename="js/game.js")}}'></script>
 </head>
 <body id='{{current_user.game_code}}'>
 	<audio id='player' controls autoplay></audio>
+	<h1 id='waiting'>Ждём игроков...</h1>
+	<img src='{{url_for("static", filename="img/secret agency.png")}}' alt='Роль' id='role_img'>
+	<h1 id='role_name'>Secret Agency</h1>
+	<h2 id='role_about'>Вычисли и арестуй Двойного Агента вместе с другими Секретными Агентами.</h2>
+	<button id='role_ok'>Получить первое дело</button>
+	<div id='info_paper'></div>
+	<img src='{{url_for("static", filename="img/folder.png")}}' alt='Папка' id='info_folder'>
+	<button id='info_ok'>Начать обсуждение</button>
+
+	<img src='{{url_for("static", filename="img/front agent a.png")}}' alt='Спереди' id='front_agent'>
+
+	<script src='{{url_for("static", filename="js/game.js")}}'></script>
 </body>
 </html>

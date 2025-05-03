@@ -13,6 +13,7 @@ class User(SqlAlchemyBase, UserMixin):
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     game_code = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('games.code'))
+    name = sqlalchemy.Column(sqlalchemy.String)
 
     game = orm.relationship('Game')
 

@@ -8,19 +8,87 @@ from wtforms import EmailField, PasswordField, SubmitField, StringField, Integer
 from wtforms.validators import DataRequired
 from flask_socketio import SocketIO
 import random
+import threading
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '6as7d6f876xyucxgyfyu63tuy32tuc'
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
 login_manager = LoginManager()
 login_manager.init_app(app)
 db_session.global_init('db/data.db')
+
+games = {}
 
 
 @socketio.on('audio_chunk')
 def handle_audio_chunk(data):
     socketio.emit('audio_chunk', data)
+
+
+@socketio.on('player ready')
+def player_ready(data):
+    print('player ready', data)
+    db_sess = db_session.create_session()
+    games[data[0]]['players'][data[1]] = {'role': 0, 'player_status': 0, 'name': db_sess.query(User).filter(User.id == data[1]).first().name}
+
+
+@socketio.on('player get info')
+def player_get_info(data):
+    print('player get info', data)
+    games[data[0]]['players'][data[1]]['player_status'] = 1
+
+
+@socketio.on('player start discuss')
+def player_start_discuss(data):
+    print('player start discuss', data)
+    games[data[0]]['players'][data[1]]['player_status'] = 2
+
+
+def generate_info(players):
+    hunter = [p for p in players if players[p]['role'] == 1][0]
+    result = []
+    secret_call = False
+    for p in players:
+        if p == hunter:
+            result.append([p, 'Ты - <b>Двойной Агент</b>. Не дай им себя раскрыть!'])
+        else:
+            if secret_call:
+                first_second = [players[hunter]['name'], players[random.choice([i for i in players if i != hunter])]['name']]
+                if random.randint(0, 1):
+                    first_second = first_second[::-1]
+                first = first_second[0]
+                second = first_second[1]
+                result.append([p, 'После успешного взлома серверов <b>Team Hunters</b> стало известно, что их агентом является либо <b>' + first + '</b>, либо <b>' + second + '</b>.'])
+            else:
+                who = players[random.choice([i for i in players if i not in [hunter, p]])]['name']
+                result.append([p, 'Совершив секретный звонок своему начальству, вы узнаёте, что <b>Секретным Агентом</b> является <b>' + who + '</b>.'])
+    return result
+    
+
+def games_polling():
+    global games
+    while True:
+        for game_id in games:
+            pl = games[game_id]['players'].copy()
+            if len(pl) == 4 and games[game_id]['game_status'] == 0:
+                games[game_id]['game_status'] = 1
+                hunter_id = random.choice(list(pl))
+                print(hunter_id)
+                games[game_id]['players'][hunter_id]['role'] = 1
+                socketio.emit('starting', hunter_id)
+            elif all([pl[i]['player_status'] == 1 for i in pl]) and games[game_id]['game_status'] == 1:
+                games[game_id]['game_status'] = 2
+                info = generate_info(games[game_id]['players'])
+                socketio.emit('info', info)
+            elif all([pl[i]['player_status'] == 2 for i in pl]) and games[game_id]['game_status'] == 2:
+                games[game_id]['game_status'] = 3
+                socketio.emit('discuss')
+
+
+target = threading.Thread(target=games_polling)
+target.start()
 
 
 @login_manager.user_loader
@@ -96,6 +164,7 @@ def join():
             if db_sess.query(Game).filter(Game.code == int(form.code.data)).all():
                 user = db_sess.query(User).filter(User.id == current_user.id).first()
                 user.game_code = int(form.code.data)
+                user.name = form.name.data
                 db_sess.commit()
                 return redirect('/lobby')
             else:
@@ -104,9 +173,11 @@ def join():
             games_ids = [i.code for i in db_sess.query(Game).all()]
             game_id = random.choice([i for i in range(10, 99) if i not in games_ids])
             game = Game(leader=current_user.id, code=game_id)
+            games[game_id] = {'players': {}, 'game_status': 0}
             db_sess.add(game)
             user = db_sess.query(User).filter(User.id == current_user.id).first()
             user.game_code = game_id
+            user.name = form.name.data
             db_sess.commit()
             return redirect('/lobby')
     return render_template('join.html', form=form)
@@ -116,7 +187,7 @@ def join():
 @login_required
 def lobby():
     db_sess = db_session.create_session()
-    if len(db_sess.query(User).filter(User.game_code == current_user.game_code).all()) == 2:
+    if len(db_sess.query(User).filter(User.game_code == current_user.game_code).all()) == 4:
         return redirect('/game')
     return render_template('lobby.html')
 
@@ -128,4 +199,4 @@ def game():
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='127.0.0.1', port=8000, debug=True)
+    socketio.run(app, host='192.168.0.106', port=8000, debug=True)
