@@ -8,13 +8,11 @@ from wtforms import EmailField, PasswordField, SubmitField, StringField, Integer
 from wtforms.validators import DataRequired
 from flask_socketio import SocketIO
 import random
-import threading
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '6as7d6f876xyucxgyfyu63tuy32tuc'
-socketio = SocketIO(app)
-socketio.init_app(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*")
 login_manager = LoginManager()
 login_manager.init_app(app)
 db_session.global_init('db/data.db')
@@ -29,21 +27,32 @@ def handle_audio_chunk(data):
 
 @socketio.on('player ready')
 def player_ready(data):
-    print('player ready', data)
     db_sess = db_session.create_session()
     games[data[0]]['players'][data[1]] = {'role': 0, 'player_status': 0, 'name': db_sess.query(User).filter(User.id == data[1]).first().name}
+    if len(games[data[0]]['players']) == 4:
+        games[data[0]]['game_status'] = 1
+        hunter_id = random.choice(list(games[data[0]]['players']))
+        games[data[0]]['players'][hunter_id]['role'] = 1
+        socketio.emit('starting', hunter_id)
 
 
 @socketio.on('player get info')
 def player_get_info(data):
     print('player get info', data)
     games[data[0]]['players'][data[1]]['player_status'] = 1
+    if all([games[data[0]]['players'][i]['player_status'] == 1 for i in games[data[0]]['players']]):
+        games[data[0]]['game_status'] = 2
+        info = generate_info(games[data[0]]['players'])
+        socketio.emit('info', info)
 
 
 @socketio.on('player start discuss')
 def player_start_discuss(data):
     print('player start discuss', data)
     games[data[0]]['players'][data[1]]['player_status'] = 2
+    if all([games[data[0]]['players'][i]['player_status'] == 2 for i in games[data[0]]['players']]):
+        games[data[0]]['game_status'] = 3
+        socketio.emit('discuss', 0)
 
 
 def generate_info(players):
@@ -65,30 +74,6 @@ def generate_info(players):
                 who = players[random.choice([i for i in players if i not in [hunter, p]])]['name']
                 result.append([p, 'Совершив секретный звонок своему начальству, вы узнаёте, что <b>Секретным Агентом</b> является <b>' + who + '</b>.'])
     return result
-    
-
-def games_polling():
-    global games
-    while True:
-        for game_id in games:
-            pl = games[game_id]['players'].copy()
-            if len(pl) == 4 and games[game_id]['game_status'] == 0:
-                games[game_id]['game_status'] = 1
-                hunter_id = random.choice(list(pl))
-                print(hunter_id)
-                games[game_id]['players'][hunter_id]['role'] = 1
-                socketio.emit('starting', hunter_id)
-            elif all([pl[i]['player_status'] == 1 for i in pl]) and games[game_id]['game_status'] == 1:
-                games[game_id]['game_status'] = 2
-                info = generate_info(games[game_id]['players'])
-                socketio.emit('info', info)
-            elif all([pl[i]['player_status'] == 2 for i in pl]) and games[game_id]['game_status'] == 2:
-                games[game_id]['game_status'] = 3
-                socketio.emit('discuss')
-
-
-target = threading.Thread(target=games_polling)
-target.start()
 
 
 @login_manager.user_loader
@@ -166,7 +151,7 @@ def join():
                 user.game_code = int(form.code.data)
                 user.name = form.name.data
                 db_sess.commit()
-                return redirect('/lobby')
+                return redirect('/game')
             else:
                 return render_template('join.html', form=form, message='Неверный код!')
         else:
@@ -179,17 +164,8 @@ def join():
             user.game_code = game_id
             user.name = form.name.data
             db_sess.commit()
-            return redirect('/lobby')
+            return redirect('/game')
     return render_template('join.html', form=form)
-
-
-@app.route('/lobby', methods=['GET', 'POST'])
-@login_required
-def lobby():
-    db_sess = db_session.create_session()
-    if len(db_sess.query(User).filter(User.game_code == current_user.game_code).all()) == 4:
-        return redirect('/game')
-    return render_template('lobby.html')
 
 
 @app.get('/game')
@@ -199,4 +175,4 @@ def game():
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='192.168.0.106', port=8000, debug=True)
+    socketio.run(app, host='127.0.0.1', port=8000, debug=False)

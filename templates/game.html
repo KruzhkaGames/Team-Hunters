@@ -8,7 +8,7 @@
 </head>
 <body id='{{current_user.game_code}}'>
 	<audio id='player' controls autoplay></audio>
-	<h1 id='waiting'>Ждём игроков...</h1>
+	<h1 id='waiting'>Код игры: {{current_user.game_code}}. Ждём игроков (нужно 4)...</h1>
 	<img src='{{url_for("static", filename="img/secret agency.png")}}' alt='Роль' id='role_img'>
 	<h1 id='role_name'>Secret Agency</h1>
 	<h2 id='role_about'>Вычисли и арестуй Двойного Агента вместе с другими Секретными Агентами.</h2>

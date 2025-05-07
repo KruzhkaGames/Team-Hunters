@@ -1,7 +1,21 @@
 // Голосовой чат (я просто не вдупляю что это за бред сумасшедшего)
 
 let mediaRecorder;
-let socket;
+window.current_player_status = 0;
+
+window.socket = io.connect('http://' + location.host);
+window.socket.on('audio_chunk', (data) => {if (data[0] == Number(document.getElementsByTagName('body')[0].id)) {const arrayBuffer = new Uint8Array(data[1]).buffer; chunkQueue.push(arrayBuffer); processQueue();}});
+window.socket.on('starting', (data) => {
+    if (window.current_player_status == 0) {window.current_player_status = 1;
+    document.getElementById('waiting').style.top = '-250px';
+    console.log(data);
+    show_role(Number(document.getElementsByTagName('head')[0].id) == data[0]);};});
+window.socket.on('info', (data) => {if (window.current_player_status == 1) {window.current_player_status = 2;show_info(data);};});
+window.socket.on('discuss', (data) => {if (window.current_player_status == 2) {window.current_player_status = 3;
+    document.getElementById('front_agent').style.left = 'calc(50% - 250px)';
+    try {startRecording();} catch (e) {console.log('Recording error: ' + e);};};
+});
+
 let mediaSource;
 let sourceBuffer;
 let chunkQueue = [];
@@ -20,12 +34,6 @@ function initMediaSource() {
 
 function processQueue() {if (!isBufferUpdating && chunkQueue.length > 0) {isBufferUpdating = true; const chunk = chunkQueue.shift(); sourceBuffer.appendBuffer(chunk);}}
 
-function initSocket() {
-    socket = io.connect('http://' + location.host);
-    socket.on('audio_chunk', (data) => {
-        if (data[0] == Number(document.getElementsByTagName('body')[0].id)) {const arrayBuffer = new Uint8Array(data[1]).buffer; chunkQueue.push(arrayBuffer); processQueue();}});
-}
-
 async function startRecording() {
     try {initMediaSource(); if (!stream) {stream = await navigator.mediaDevices.getUserMedia({ audio: true });}
         if (mediaRecorder) {mediaRecorder.stop();} mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm;codecs=opus'});
@@ -43,10 +51,7 @@ function start_discuss() {
     document.getElementById('info_paper').style.left = '-100%';
     document.getElementById('info_folder').style.left = '-100%';
     document.getElementById('info_ok').style.left = '-100%';
-    socket.emit('player start discuss', [game_code, player_id]);
-    socket.on('discuss', (data) => {
-        document.getElementById('front_agent').style.top = 'calc(50% - 250px)';
-    });
+    window.socket.emit('player start discuss', [game_code, player_id]);
 }
 
 function show_info_second() {
@@ -77,8 +82,7 @@ function start_first_info() {
     document.getElementById('role_name').style.left = '-100%';
     document.getElementById('role_about').style.left = '-100%';
     document.getElementById('role_ok').style.left = '-100%';
-    socket.emit('player get info', [game_code, player_id]);
-    socket.on('info', (data) => {show_info(data);});
+    window.socket.emit('player get info', [game_code, player_id]);
 }
 
 function show_role(is_hunter) {
@@ -100,20 +104,12 @@ function show_role(is_hunter) {
 
 
 function start_game() {
-    console.log(document.getElementsByTagName('head')[0].id, document.getElementsByTagName('body')[0].id);
     let player_id = Number(document.getElementsByTagName('head')[0].id);
     let game_code = Number(document.getElementsByTagName('body')[0].id);
-    console.log(player_id, game_code);
-    let is_hunter = false;
-    socket.emit('player ready', [game_code, player_id]);
-    socket.on('starting', (data) => {if (player_id == data[0]) {is_hunter = true;};
-        document.getElementById('waiting').style.top = '-250px';
-        show_role(is_hunter);});
+    window.socket.emit('player ready', [game_code, player_id]);
 }
 
 
 window.onload = function() {
-    initSocket();
-    try {startRecording();} catch (e) {console.log('Recording error: ' + e);};
     start_game();
 };
