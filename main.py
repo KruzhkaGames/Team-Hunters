@@ -11,7 +11,7 @@ import random
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '6as7d6f876xyucxgyfyu63tuy32tuc'
+app.config['SECRET_KEY'] = ''
 socketio = SocketIO(app, cors_allowed_origins="*")
 login_manager = LoginManager()
 login_manager.init_app(app)
