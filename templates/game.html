@@ -4,7 +4,7 @@
 	<meta charset='utf-8'>
 	<title>Team Hunters</title>
 	<link rel='stylesheet' href='{{url_for("static", filename="css/game.css")}}'>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js" id='{{current_user.name}}'></script>
 </head>
 <body id='{{current_user.game_code}}'>
 	<audio id='player' controls autoplay></audio>
@@ -18,7 +18,35 @@
 	<button id='info_ok'>Начать обсуждение</button>
 
 	<img src='{{url_for("static", filename="img/front agent a.png")}}' alt='Спереди' id='front_agent'>
+	<img src='{{url_for("static", filename="img/front hat 0.png")}}' alt='Шляпа' id='front_hat'>
+	<h1 id='front_name'>Игрок 2</h1>
+	<img src='{{url_for("static", filename="img/left agent a.png")}}' alt='Слева' id='left_agent'>
+	<img src='{{url_for("static", filename="img/left hat 0.png")}}' alt='Шляпа' id='left_hat'>
+	<h1 id='left_name'>Игрок 1</h1>
+	<img src='{{url_for("static", filename="img/right agent a.png")}}' alt='Справа' id='right_agent'>
+	<img src='{{url_for("static", filename="img/right hat 0.png")}}' alt='Шляпа' id='right_hat'>
+	<h1 id='right_name'>Игрок 3</h1>
+	<img src='{{url_for("static", filename="img/table.png")}}' alt='Стол' id='table'>
 
-	<script src='{{url_for("static", filename="js/game.js")}}'></script>
+	<button id='take_info'>Взять ещё дело (-150000 от выигрыша)</button>
+	<button id='take_vote'>Начать голосование</button>
+
+	<img src='{{url_for("static", filename="img/hint3.png")}}' alt='Выигрыш' id='cash_icon'>
+	<h1 id='cash'>450000</h1>
+
+	<h1 id='vote'>За кого ты голосуешь?</h1>
+	<h1 id='vote_1'>Игрок 1</h1>
+	<img src='{{url_for("static", filename="img/front agent a.png")}}' alt='Игрок 1' id='vote_1_img'>
+	<h1 id='vote_2'>Игрок 2</h1>
+	<img src='{{url_for("static", filename="img/front agent a.png")}}' alt='Игрок 2' id='vote_2_img'>
+	<h1 id='vote_3'>Игрок 3</h1>
+	<img src='{{url_for("static", filename="img/front agent a.png")}}' alt='Игрок 3' id='vote_3_img'>
+	<button id='complete_vote'>Проголосовать</button>
+
+	<img src='{{url_for("static", filename="img/team hunters.png")}}' alt='Team Hunters' id='vote_result_img'>
+	<h1 id='vote_result'>Игрок</h1>
+	<button id='return'>Новая игра</button>
+
+	<script src='{{url_for("static", filename="js/game.js")}}' id='{{current_user.name}}'></script>
 </body>
 </html>

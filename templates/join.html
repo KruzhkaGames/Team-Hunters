@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang='ru'>
-<head>
+<head id='{{current_user.id}}'>
 	<meta charset='utf-8'>
 	<title>Начало игры</title>
 	<link rel='stylesheet' 
@@ -10,7 +10,7 @@
 	<link rel='stylesheet' href='{{url_for("static", filename="css/join.css")}}'>
 	<script src='{{url_for("static", filename="js/join.js")}}'></script>
 </head>
-<body>
+<body id='{{current_user.opened_hats}}'>
 	<form action='' method='post' novalidate>
 		{{ form.hidden_tag() }}
 		<p id='name' align='center'>{{current_user.email}}, введи имя!</p>
@@ -28,8 +28,27 @@
 	        {% endfor %}
 	    </p>
 	    <p id='create' align='center'>Или создай свою игру! (введи код 0)</p>
+	    <p id='hat' align='center'>Введи код шляпки, которую хочешь надеть!</p>
+		<p align='center'>
+	        {{form.hat(class='form-control')}}<br>
+	        {% for error in form.hat.errors %}
+	            <p class='alert alert-danger' role='alert' align='center'>{{ error }}</p>
+	        {% endfor %}
+	    </p>
 		<p align='center'>{{ form.create(type='submit', class='btn btn-primary') }}</p>
     	{{message}}
 	</form>
+	<p id='cash'>Баланс: {{current_user.cash}}</p>
+	<div id='hats_box'>
+		<p id='hats'>Шляпки (цена каждой - 1.000.000)</p>
+		<button id='hat_0_btn' class='hat_btns'>Купить</button>
+		<img src='{{url_for("static", filename="img/front agent a.png")}}' alt='Игрок' id='hat_0_player' class='hat_imgs'>
+		<img src='{{url_for("static", filename="img/front hat 0.png")}}' alt='Нет шляпки' id='hat_0_img' class='hat_imgs'>
+		<p id='hat_0' class='hat_names'>0. Нет шляпки</p>
+		<button id='hat_1_btn' class='hat_btns'>Купить</button>
+		<img src='{{url_for("static", filename="img/front agent a.png")}}' alt='Игрок' id='hat_1_player' class='hat_imgs'>
+		<img src='{{url_for("static", filename="img/front hat 1.png")}}' alt='Очки' id='hat_1_img' class='hat_imgs'>
+		<p id='hat_1' class='hat_names'>1. Очки</p>
+	</div>
 </body>
 </html>

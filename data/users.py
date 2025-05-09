@@ -14,6 +14,9 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     game_code = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('games.code'))
     name = sqlalchemy.Column(sqlalchemy.String)
+    hat = sqlalchemy.Column(sqlalchemy.Integer)
+    cash = sqlalchemy.Column(sqlalchemy.Integer)
+    opened_hats = sqlalchemy.Column(sqlalchemy.String)
 
     game = orm.relationship('Game')
 

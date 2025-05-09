@@ -1,5 +1,5 @@
 body {
-	background-color: black;
+	background-color: rgb(25, 25, 25);
 }
 
 #waiting {
@@ -118,4 +118,313 @@ body {
 	width: 500px;
 	height: 500px;
 	transition: 1s ease;
+}
+
+#left_agent {
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 500px);
+	left: -100%;
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#right_agent {
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 500px);
+	left: -100%;
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#table {
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 500px);
+	left: -100%;
+	width: 100%;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#player {
+	position: absolute;
+	top: -100%;
+	left: 0;
+	margin: 0;
+	width: 200px;
+	height: 100px;
+}
+
+#take_info {
+	color: white;
+	background-color: red;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: -100%;
+	left: 0;
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#take_vote {
+	color: white;
+	background-color: red;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: -100%;
+	left: calc(100% - 400px);
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#cash {
+	color: yellow;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 300px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 600px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#cash_icon {
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 100px);
+	width: 200px;
+	height: 200px;
+	transition: 1s ease;
+}
+
+#vote {
+	color: white;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 500px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 1000px;
+	height: 100px;
+}
+
+#vote_1 {
+	color: yellow;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 600px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#vote_1_img {
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 600px);
+	width: 400px;
+	height: 400px;
+	transition: 1s ease;
+}
+
+#vote_2 {
+	color: yellow;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 200px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#vote_2_img {
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 200px);
+	width: 400px;
+	height: 400px;
+	transition: 1s ease;
+}
+
+#vote_3 {
+	color: yellow;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% + 200px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#vote_3_img {
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% + 200px);
+	width: 400px;
+	height: 400px;
+	transition: 1s ease;
+}
+
+#complete_vote {
+	color: white;
+	background-color: red;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: -100%;
+	left: calc(50% - 600px);
+	width: 1200px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#vote_result_img {
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 250px);
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#vote_result {
+	color: red;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: -100%;
+	left: calc(50% - 300px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 600px;
+	height: 100px;
+}
+
+#return {
+	color: white;
+	background-color: red;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: -100%;
+	left: calc(50% - 200px);
+	width: 400px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#left_name {
+	color: white;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 100px);
+	left: -100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 500px;
+	height: 100px;
+}
+
+#front_name {
+	color: white;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 100px);
+	left: -100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 500px;
+	height: 100px;
+}
+
+#right_name {
+	color: white;
+	font-family: consolas;
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 100px);
+	left: -100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 500px;
+	height: 100px;
+}
+
+#front_hat {
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 500px);
+	left: -100%;
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#left_hat {
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 500px);
+	left: -100%;
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+#right_hat {
+	position: absolute;
+	margin: 0;
+	top: calc(100% - 500px);
+	left: -100%;
+	width: 500px;
+	height: 500px;
+	transition: 1s ease;
+}
+
+button {
+	border-radius: 10px;
 }

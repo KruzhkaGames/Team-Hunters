@@ -2,8 +2,100 @@ body {
 	background-color: black;
 }
 
-p {
+form p {
 	color: white;
 	font-family: consolas;
 	font-size: 32px;
+}
+
+#cash {
+	color: yellow;
+	font-family: consolas;
+	font-size: 32px;
+}
+
+#hats {
+	color: white;
+	font-family: consolas;
+	font-size: 32px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.hat_names {
+	color: white;
+	font-family: consolas;
+	font-size: 24px;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 600px;
+	width: 500px;
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.hat_imgs {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 200px;
+	width: 500px;
+	height: 500px;
+}
+
+.hat_btns {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 100px;
+	color: white;
+	background-color: green;
+	width: 500px;
+	height: 100px;
+}
+
+#hat_0_btn {
+	left: 0;
+}
+
+#hat_0_player {
+	left: 0;
+}
+
+#hat_0_img {
+	left: 0;
+}
+
+#hat_0 {
+	left: 0;
+}
+
+#hat_1_btn {
+	left: 500px;
+}
+
+#hat_1_player {
+	left: 500px;
+}
+
+#hat_1_img {
+	left: 500px;
+}
+
+#hat_1 {
+	left: 500px;
+}
+
+#hats_box {
+	margin: 0;
+	padding: 0;
+	width: 1000px;
+	height: 700px;
+	position: absolute;
+	top: 1000px;
+	left: 0;
 }
