@@ -20,7 +20,7 @@ window.player_id = Number(document.getElementsByTagName('head')[0].id);
 window.other_players = [];
 window.current_vote = 0;
 
-window.socket = io.connect('http://' + location.host);
+window.socket = io.connect('https://' + location.host);
 
 window.socket.on('audio_chunk', (data) => {
     if (data[0] == window.game_code)
@@ -232,7 +232,7 @@ window.socket.on('vote result', (data) => {
             document.getElementById('return').style.top = '850px';
             document.getElementById('return').onclick = function() {
                 window.socket.emit('player quit', [window.game_code, window.player_id]);
-                window.location.href = 'http://' + location.host + '/join';
+                window.location.href = 'https://' + location.host + '/join';
             };
 
             if (data[1])

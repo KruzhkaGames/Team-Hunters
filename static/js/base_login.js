@@ -5,5 +5,5 @@ function change() {
 	} else {
 		now_is = 'register';
 	}
-	window.location.href = 'http://' + location.host + '/' + now_is;
+	window.location.href = 'https://' + location.host + '/' + now_is;
 }

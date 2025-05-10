@@ -11,7 +11,7 @@ function show_logo() {
 
 
 function login() {
-	window.location.href = 'http://' + location.host + '/login';
+	window.location.href = 'https://' + location.host + '/login';
 }
 
 

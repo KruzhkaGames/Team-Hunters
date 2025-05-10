@@ -15,7 +15,7 @@ window.onload = function() {
 		document.getElementById('hat_0_btn').onclick = function() {
 			if (Number(document.getElementById('cash').innerHTML.split(' ')[1]) >= 1000000)
 			{
-				fetch('http://' + location.host + '/buy', {
+				fetch('https://' + location.host + '/buy', {
 					method: 'PUT',
 					headers: {
 						'Content-Type': 'application/json;charset=utf-8'
@@ -25,7 +25,7 @@ window.onload = function() {
 						hat: 0
 					})
 				});
-				window.location.href = 'http://' + location.host + '/join';
+				window.location.href = 'https://' + location.host + '/join';
 			};
 		};
 	};
@@ -39,7 +39,7 @@ window.onload = function() {
 		document.getElementById('hat_1_btn').onclick = function() {
 			if (Number(document.getElementById('cash').innerHTML.split(' ')[1]) >= 1000000)
 			{
-				fetch('http://' + location.host + '/buy', {
+				fetch('https://' + location.host + '/buy', {
 					method: 'PUT',
 					headers: {
 						'Content-Type': 'application/json;charset=utf-8'
@@ -49,7 +49,7 @@ window.onload = function() {
 						hat: 1
 					})
 				});
-				window.location.href = 'http://' + location.host + '/join';
+				window.location.href = 'https://' + location.host + '/join';
 			};
 		};
 	};
