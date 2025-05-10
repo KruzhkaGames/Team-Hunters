@@ -150,13 +150,34 @@ body {
 	transition: 1s ease;
 }
 
-#player {
+#player_1 {
 	position: absolute;
 	top: -100%;
 	left: 0;
 	margin: 0;
 	width: 200px;
 	height: 100px;
+	transition: 1s ease;
+}
+
+#player_2 {
+	position: absolute;
+	top: -100%;
+	left: 0;
+	margin: 0;
+	width: 200px;
+	height: 100px;
+	transition: 1s ease;
+}
+
+#player_3 {
+	position: absolute;
+	top: -100%;
+	left: 0;
+	margin: 0;
+	width: 200px;
+	height: 100px;
+	transition: 1s ease;
 }
 
 #take_info {
@@ -224,6 +245,7 @@ body {
 	align-items: center;
 	width: 1000px;
 	height: 100px;
+	transition: 1s ease;
 }
 
 #vote_1 {
@@ -337,6 +359,7 @@ body {
 	align-items: center;
 	width: 600px;
 	height: 100px;
+	transition: 1s ease;
 }
 
 #return {
@@ -358,13 +381,14 @@ body {
 	font-family: consolas;
 	position: absolute;
 	margin: 0;
-	top: calc(100% - 100px);
+	top: calc(100% - 500px);
 	left: -100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 500px;
 	height: 100px;
+	transition: 1s ease;
 }
 
 #front_name {
@@ -372,13 +396,14 @@ body {
 	font-family: consolas;
 	position: absolute;
 	margin: 0;
-	top: calc(100% - 100px);
+	top: calc(100% - 500px);
 	left: -100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 500px;
 	height: 100px;
+	transition: 1s ease;
 }
 
 #right_name {
@@ -386,13 +411,14 @@ body {
 	font-family: consolas;
 	position: absolute;
 	margin: 0;
-	top: calc(100% - 100px);
+	top: calc(100% - 500px);
 	left: -100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 500px;
 	height: 100px;
+	transition: 1s ease;
 }
 
 #front_hat {

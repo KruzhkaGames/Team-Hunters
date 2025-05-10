@@ -7,7 +7,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js" id='{{current_user.name}}'></script>
 </head>
 <body id='{{current_user.game_code}}'>
-	<audio id='player' controls autoplay></audio>
+	<audio id='player_1' controls autoplay></audio>
+	<audio id='player_2' controls autoplay></audio>
+	<audio id='player_3' controls autoplay></audio>
+
 	<h1 id='waiting'>Код игры: {{current_user.game_code}}. Ждём игроков (нужно 4)...</h1>
 	<img src='{{url_for("static", filename="img/secret agency.png")}}' alt='Роль' id='role_img'>
 	<h1 id='role_name'>Secret Agency</h1>

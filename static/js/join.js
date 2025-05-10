@@ -45,8 +45,8 @@ window.onload = function() {
 						'Content-Type': 'application/json;charset=utf-8'
 					},
 					body: JSON.stringify({
-						player_id: document.getElementsByTagName('head')[0].id;
-						hat: 1;
+						player_id: document.getElementsByTagName('head')[0].id,
+						hat: 1
 					})
 				});
 				window.location.href = 'http://' + location.host + '/join';

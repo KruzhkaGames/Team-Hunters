@@ -1,0 +1,7 @@
+flask
+flask-login
+flask-wtf
+wtforms
+flask-socketio
+sqlalchemy
+werkzeug

@@ -6,7 +6,6 @@ from .games import Game
 from .users import User
 
 blueprint = flask.Blueprint('games_api', __name__, template_folder='templates')
-db_session.global_init('../db/data.db')
 
 
 @blueprint.get('/api/users')

@@ -25,9 +25,22 @@ window.socket = io.connect('http://' + location.host);
 window.socket.on('audio_chunk', (data) => {
     if (data[0] == window.game_code)
     {
-        const arrayBuffer = new Uint8Array(data[1]).buffer;
-        chunkQueue.push(arrayBuffer);
-        processQueue();
+        if (data[2] == window.other_players[0][0])
+        {
+            const arrayBuffer = new Uint8Array(data[1]).buffer;
+            chunkQueue[0].push(arrayBuffer);
+            processQueue(0);
+        } else if (data[2] == window.other_players[1][0])
+        {
+            const arrayBuffer = new Uint8Array(data[1]).buffer;
+            chunkQueue[1].push(arrayBuffer);
+            processQueue(1);
+        } else if (data[2] == window.other_players[2][0])
+        {
+            const arrayBuffer = new Uint8Array(data[1]).buffer;
+            chunkQueue[2].push(arrayBuffer);
+            processQueue(2);
+        };
     };
 });
 
@@ -263,58 +276,99 @@ window.socket.on('vote result', (data) => {
 // Голосовой чат
 
 let mediaRecorder;
-let mediaSource;
-let sourceBuffer;
-let chunkQueue = [];
-let isBufferUpdating = false;
+let mediaSource = [undefined, undefined, undefined];
+let sourceBuffer = [undefined, undefined, undefined];
+let chunkQueue = [[], [], []];
+let isBufferUpdating = [false, false, false];
 let stream;
+let audioContext = [undefined, undefined, undefined];
+let analyser = [undefined, undefined, undefined];
+let mediaElementSource = [undefined, undefined, undefined];
+let animationFrameId = [undefined, undefined, undefined];
 
-function initMediaSource() {
-    if (mediaSource)
+function initAudioAnalyser(index)
+{
+    audioContext[index] = new (window.AudioContext || window.webkitAudioContext)();
+    analyser[index] = audioContext[index].createAnalyser();
+    analyser[index].fftSize = 256;
+
+    const player = document.getElementById('player_' + (index + 1));
+    mediaElementSource[index] = audioContext[index].createMediaElementSource(player);
+    mediaElementSource[index].connect(analyser[index]);
+    analyser[index].connect(audioContext[index].destination);
+};
+
+function updateVolume(index) {
+    if (!analyser[index]) return;
+
+    const dataArray = new Uint8Array(analyser[index].frequencyBinCount);
+    analyser[index].getByteFrequencyData(dataArray);
+    
+    let sum = dataArray.reduce((a, b) => a + b, 0);
+    const volume = Math.min((sum / dataArray.length) * 0.5, 100);
+    
+    if (volume <= 15)
     {
-        if (mediaSource.readyState === 'open')
-        {
-            mediaSource.endOfStream();
-        };
-        URL.revokeObjectURL(mediaSource);
+        document.getElementById(['left_agent', 'front_agent', 'right_agent'][index]).src = replace_img(document.getElementById(['left_agent', 'front_agent', 'right_agent'][index]).src, ['left agent a.png', 'front agent a.png', 'right agent a.png'][index]);
+    } else if (volume <= 50)
+    {
+        document.getElementById(['left_agent', 'front_agent', 'right_agent'][index]).src = replace_img(document.getElementById(['left_agent', 'front_agent', 'right_agent'][index]).src, ['left agent b.png', 'front agent b.png', 'right agent b.png'][index]);
+    } else
+    {
+        document.getElementById(['left_agent', 'front_agent', 'right_agent'][index]).src = replace_img(document.getElementById(['left_agent', 'front_agent', 'right_agent'][index]).src, ['left agent c.png', 'front agent c.png', 'right agent c.png'][index]);
     };
-    mediaSource = new MediaSource();
-    const player = document.getElementById('player');
-    player.src = URL.createObjectURL(mediaSource);
-    mediaSource.addEventListener('sourceopen', () => {
-        if (sourceBuffer)
+    
+    animationFrameId[index] = requestAnimationFrame(function() {updateVolume(index);});
+};
+
+function initMediaSource(index) {
+    if (mediaSource[index])
+    {
+        if (mediaSource[index].readyState === 'open')
+        {
+            mediaSource[index].endOfStream();
+        };
+        URL.revokeObjectURL(mediaSource[index]);
+    };
+    mediaSource[index] = new MediaSource();
+    const player = document.getElementById('player_' + (index + 1));
+    player.src = URL.createObjectURL(mediaSource[index]);
+    mediaSource[index].addEventListener('sourceopen', () => {
+        if (sourceBuffer[index])
         {
             try
             {
-                mediaSource.removeSourceBuffer(sourceBuffer);
+                mediaSource[index].removeSourceBuffer(sourceBuffer[index]);
             } catch(e)
             {
 
             };
         };
-        sourceBuffer = mediaSource.addSourceBuffer('audio/webm; codecs=opus');
-        sourceBuffer.mode = 'sequence';
-        sourceBuffer.addEventListener('updateend', () => {
-            isBufferUpdating = false;
-            processQueue();
+        sourceBuffer[index] = mediaSource[index].addSourceBuffer('audio/webm; codecs=opus');
+        sourceBuffer[index].mode = 'sequence';
+        sourceBuffer[index].addEventListener('updateend', () => {
+            isBufferUpdating[index] = false;
+            processQueue(index);
         });
-        processQueue();
+        processQueue(index);
     });
 };
 
-function processQueue() {
-    if (!isBufferUpdating && chunkQueue.length > 0)
+function processQueue(index) {
+    if (!isBufferUpdating[index] && chunkQueue[index].length > 0)
     {
-        isBufferUpdating = true;
-        const chunk = chunkQueue.shift();
-        sourceBuffer.appendBuffer(chunk);
+        isBufferUpdating[index] = true;
+        const chunk = chunkQueue[index].shift();
+        sourceBuffer[index].appendBuffer(chunk);
     };
 };
 
 async function startRecording() {
     try
     {
-        initMediaSource();
+        initMediaSource(0);
+        initMediaSource(1);
+        initMediaSource(2);
         if (!stream)
         {
             stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -328,7 +382,7 @@ async function startRecording() {
             if (event.data.size > 0)
             {
                 const buffer = await event.data.arrayBuffer();
-                socket.emit('audio_chunk', [window.game_code, Array.from(new Uint8Array(buffer))]);
+                socket.emit('audio_chunk', [window.game_code, Array.from(new Uint8Array(buffer)), window.player_id]);
             };
         };
         mediaRecorder.start(100);
@@ -448,6 +502,15 @@ window.onload = function() {
     try
     {
         startRecording();
+        if (!audioContext[0]) initAudioAnalyser(0);
+        cancelAnimationFrame(animationFrameId[0]);
+        updateVolume(0);
+        if (!audioContext[1]) initAudioAnalyser(1);
+        cancelAnimationFrame(animationFrameId[1]);
+        updateVolume(1);
+        if (!audioContext[2]) initAudioAnalyser(2);
+        cancelAnimationFrame(animationFrameId[2]);
+        updateVolume(2);
     } catch (e)
     {
         console.log('Recording error: ' + e);

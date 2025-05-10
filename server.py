@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from data import db_session
+from data import db_session, games_api
 from data.users import User
 from data.games import Game
 from flask_wtf import FlaskForm
@@ -13,7 +13,7 @@ import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = ''
-# app.register_blueprint(games_api.blueprint)
+app.register_blueprint(games_api.blueprint)
 socketio = SocketIO(app, cors_allowed_origins="*")
 login_manager = LoginManager()
 login_manager.init_app(app)
